@@ -8,7 +8,7 @@ The implementation showcases the creation, manipulation, and traversal of a circ
 ## Operations
 - ADD(): Add a char at the end of the list;
 - DEL(): Remove specific chars from the list;
-- PRINT: Print the elements of the list in order;
+- PRINT: Print the elements of the list;
 - SORT (Quicksort): Arrange the elements of the list in the following order: punctuation < numbers < lowercase letters < uppercase letters;
 - SDX: Shift the elements of the list to the right;
 - SSX: Shift the elements of the list to the left;
