@@ -117,7 +117,7 @@
         addi s0, s0, 1
         lb t0, 0(s0)
         li t1, 40
-        bne t0, t1, error      # open parentesi
+        bne t0, t1, error      # open ()
         addi s0, s0, 1
         lb a1, 0(s0)           # char in a1
         li t1, 32
@@ -126,7 +126,7 @@
         bgt a1, t1, error      # char is bigger than 125
         addi s0, s0, 1
         lb t0, 0(s0)
-        li t1, 41              # close parentesi
+        li t1, 41              # close ()
         bne t0, t1, error
         
         jal ignore_spaces
@@ -172,24 +172,24 @@
         bne t0, t1, error
         addi s0, s0, 1
         lb t0, 0(s0)
-        li t1, 40              # open parentesi
+        li t1, 40              # open ()
         bne t0, t1, error
         addi s0, s0, 1
-        lb a1, 0(s0)           # mette in a1 char da eliminare
+        lb a1, 0(s0)
         li t1, 32
-        blt a1, t1, error      # char minore di 32
+        blt a1, t1, error      # less than 32
         li t1, 125
-        bgt a1, t1, error      # char maggiore di 125
+        bgt a1, t1, error      # bigger than 125
         addi s0, s0, 1
         lb t0, 0(s0)
-        li t1, 41              # chiusa parentesi
+        li t1, 41              # close ()
         bne t0, t1, error
         
         jal ignore_spaces
         jal DEL
         j op_end
         
-    DEL:                              # in a1 dato da eliminare
+    DEL:
         beq s1, zero, end_function
         addi sp, sp, -4
         sw ra, 0(sp)
@@ -197,30 +197,30 @@
         add t1, zero, zero
     del_cicle:  
         lb t3, 0(t2)
-        beq t3, a1, trovato           # confronta dato con char da eliminare
+        beq t3, a1, found
         add t1, t2, zero
         lw t2, 1(t2)
         beq t2, s1, del_ra
         j del_cicle
-    trovato:
+    found:
         lw t3, 1(t2)      
-        bne t1, zero, aggiorna_precedente
+        bne t1, zero, update_before
         beq t3, s1, del_solo
         jal LAST_INDEX
-        lw s1, 1(s1)                  # aggiorno l'indirizzo alla testa
+        lw s1, 1(s1)                  # new head pointer
         sw s1, 1(a0)
-        sb zero, 0(t2)                # cancella dato
-        sw zero, 1(t2)                # cancella puntatore
+        sb zero, 0(t2)                # delete data
+        sw zero, 1(t2)                # delete data pointer
         add t2, t3, zero
         j del_cicle
-    aggiorna_precedente:
+    update_before:
         sw t3, 1(t1)
         j del_end
     del_solo:
         add s1, zero, zero
     del_end:
-        sb zero, 0(t2)                # cancella dato
-        sw zero, 1(t2)                # cancella puntatore
+        sb zero, 0(t2)                # delete data
+        sw zero, 1(t2)                # delete data pointer
         beq s1, zero, del_ra
         beq t3, s1, del_ra
         add t2, t3, zero
@@ -277,7 +277,7 @@
         lw s1, 1(s1)
         jr ra
     #---------------------------------------------------------------
-    op_sdx:
+    read_sdx:
         addi s0, s0, 1
         lb t0, 0(s0)
         li t1, 88              # X
@@ -300,19 +300,19 @@
     read_S:
         addi s0, s0, 1
         lb t0, 0(s0)        
-        beq t0, t1, op_ssx     # S
-        li t1, 68              # D
-        beq t0, t1, op_sdx
+        beq t0, t1, read_ssx     # S
+        li t1, 68                # D
+        beq t0, t1, read_sdx
 
-        li t1, 79              # O
+        li t1, 79                # O
         bne t0, t1, error
         addi s0, s0, 1
         lb t0, 0(s0)
-        li t1, 82              # R
+        li t1, 82                # R
         bne t0, t1, error
         addi s0, s0, 1
         lb t0, 0(s0)
-        li t1, 84              # T
+        li t1, 84                # T
         bne t0, t1, error
         
         jal ignore_spaces
@@ -353,7 +353,7 @@
         beq a2, a0, quick_end
         lw a2, 1(a2)
         jal QUICKSORT
-     quick_end:
+    quick_end:
         lw ra, 0(sp)
         addi sp, sp, 4       
         jr ra  
@@ -365,7 +365,7 @@
         add a4, a2, zero
         add t0, a2, zero
         lb t1, 0(a0)
-        add a1, t1, zero                # pivot
+        add a1, t1, zero       # pivot
         jal find_group
         add t4, a1, zero
     part_cicle:
@@ -376,7 +376,7 @@
         add t5, a1, zero
         bne t4, t5, different_groups
         bgt t2, t1, part_else
-   different_groups: 
+    different_groups: 
         bgt t5, t4, part_else
         add a4, t0, zero
         lb t3, 0(t0)
