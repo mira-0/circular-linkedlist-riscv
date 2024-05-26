@@ -1,7 +1,7 @@
 
 # Circular Linked List in RISC-V Assembly
 
-This repository contains a simple implementation of a circular linked list data structure in RISC-V assembly language, specifically designed to handle chars.
+This repository contains a simple implementation of a circular linked list in RISC-V assembly, specifically designed to handle chars.
 
 ## Input
 
